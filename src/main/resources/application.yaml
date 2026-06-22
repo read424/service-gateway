@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: service-gateway
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ms-customer
+              uri: lb://ms-customer
+              predicates:
+                - Path=/api/v1/customers/**
+              filters:
+                - StripPrefix=0
+
+            - id: ms-transaction
+              uri: lb://ms-transaction
+              predicates:
+                - Path=/transactions/**
+              filters:
+                - StripPrefix=0
+
+            - id: ms-account
+              uri: lb://ms-account
+              predicates:
+                - Path=/api/v1/accounts/**
+              filters:
+                - StripPrefix=0
+
+            - id: ms-credits
+              uri: lb://ms-credits
+              predicates:
+                - Path=/api/v1/credits/**
+              filters:
+                - StripPrefix=0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus,gateway
+  endpoint:
+    health:
+      show-details: always
