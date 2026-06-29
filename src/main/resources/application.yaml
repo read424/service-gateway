@@ -3,45 +3,6 @@ spring:
     name: service-gateway
   config:
     import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
-  cloud:
-    gateway:
-      server:
-        webflux:
-          routes:
-            - id: ms-customer
-              uri: lb://ms-customer
-              predicates:
-                - Path=/api/v1/customers/**
-              filters:
-                - StripPrefix=0
-
-            - id: ms-transaction
-              uri: lb://ms-transaction
-              predicates:
-                - Path=/transactions/**
-              filters:
-                - StripPrefix=0
-
-            - id: ms-account
-              uri: lb://ms-account
-              predicates:
-                - Path=/api/v1/accounts/**
-              filters:
-                - StripPrefix=0
-
-            - id: ms-credits
-              uri: lb://ms-credits
-              predicates:
-                - Path=/api/v1/credits/**
-              filters:
-                - StripPrefix=0
-
-            - id: ms-balance
-              uri: lb://ms-balance
-              predicates:
-                - Path=/api/v1/balances/**
-              filters:
-                - StripPrefix=0
 
 eureka:
   client:
